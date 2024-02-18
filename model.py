@@ -81,3 +81,20 @@ def retrieval_qa_chain(llm, prompt, db):
   )
   return qa_chain
 
+def setup_qa_system():
+    # Step 1: Initialize Hugging Face embeddings
+    hugging_face_embeddings = HuggingFaceEmbeddings(model_name='sentence-transformers/all-MiniLM-L6-V2', model_kwargs={'device': 'cpu'})
+
+    # Step 2: Load FAISS vector store with embeddings
+    faiss_db = FAISS.load_local(DB_FAISS_PATH, embeddings=hugging_face_embeddings)
+
+    # Step 3: Load conditional transformer model (LLAMA-2)
+    llama_model = load_llama()
+
+    # Step 4: Set up custom prompt for QA retrieval
+    qa_prompt = set_custom_prompt()
+
+    # Step 5: Set up QA retrieval chain
+    qa_retrieval_chain = retrieval_qa_chain(llama_model, qa_prompt, faiss_db)
+
+    return qa_retrieval_chain
