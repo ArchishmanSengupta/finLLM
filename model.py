@@ -11,3 +11,18 @@ from langchain.llms import CTransformers
 from langchain.chains import RetrievalQA
 # Additional package for chain-based NLP tasks
 import chainlit as cl
+
+DB_FAISS_PATH = "vectorstores/db_faiss"
+
+custom_prompt_template = """
+You're tasked with providing a helpful response based on the given context and question.
+Accuracy is paramount, so if you're uncertain, it's best to acknowledge that rather than providing potentially incorrect information.
+
+Context: {}
+Question: {question}
+
+
+Please craft a clear and informative response that directly addresses the question.
+Aim for accuracy and relevance, keeping the user's needs in mind.
+Response:
+"""
